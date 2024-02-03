@@ -14,7 +14,7 @@
                                         @role('admin|planning')
                                         <div class="">
                                             <div class="dropdown">
-                                                <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <button class="btn btn-light" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false">
                                                     &#8230;<!-- horizontal ellipsis HTML entity  -->
                                                 </button>
                                                 <ul class="dropdown-menu">
