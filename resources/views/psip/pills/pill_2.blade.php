@@ -55,10 +55,11 @@
                                                        Options &#8230;<!-- horizontal ellipsis HTML entity -->
                                                     </button>
                                                     <ul class="dropdown-menu">
-                                                        <li><a href="#" data-bs-toggle="modal" data-bs-target="#documentModal" class="dropdown-item">View Uploaded Documents</a></li>
-                                                        <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#screeningBriefModal">Add Screening Brief</a></li>
-                                                        <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#screeningBriefModal">Add PS Note</a></li>  
-                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#updateDocumentModal"  class="dropdown-item">Reorder Activities</a>                                         
+                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#documentModal" class="dropdown-item">View Uploaded Documents</a>
+                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#screeningBriefModal">Add Screening Brief</a>
+                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#">Add PS Note</a>  
+                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#"  class="dropdown-item">Add New Activity</a>
+                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#"  class="dropdown-item">Reorder Activities</a>                                         
                                                     </ul>
                                                 </div>
                                             </div>
@@ -84,10 +85,10 @@
                                                                     &#8230;<!-- horizontal ellipsis HTML entity -->
                                                                 </button>
                                                                 <ul class="dropdown-menu">
-                                                                    <li>
-                                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#updateDocumentModal" class="dropdown-item">Add Photos To This Activity</a>
-                                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#updateDocumentModal" class="dropdown-item">View Photos For This Activity</a>
-                                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#updateDocumentModal" class="dropdown-item">View Completion Status Of This Activity</a>
+                                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#" class="dropdown-item">Edit Activity Details</a>
+                                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#" class="dropdown-item">Add Photos To This Activity</a>
+                                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#" class="dropdown-item">View Photos For This Activity</a>
+                                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#" class="dropdown-item">View Completion Status Of This Activity</a>
                                                                         @if((auth()->user()->divisions_id == 15 || auth()->user()->id == 2))
                                                                         <div class="dropdown-divider"></div>
                                                                         <button class="btn btn-danger btn-sm dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#activitySurpressModal" onclick="setSurpesssActivityId({{$b['id']}})">
@@ -99,7 +100,7 @@
                                                                             <span class="badge rounded-pill bg-danger stacked-badge">!</span>
                                                                         </button>
                                                                         @endif
-                                                                    </li>
+                                                                    
                                                                 </ul>
                                                             </div>
                                                         </div>
@@ -119,14 +120,16 @@
                                                                 </button>
                                                                 <ul class="dropdown-menu">
                                                                     <li>
+                                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#" class="dropdown-item">View Document Details</a>
                                                                         <a href="#" data-bs-toggle="modal" data-bs-target="#updateDocumentModal" onclick="setUpdateDocId({{$c['id']}},{{$b['id']}})" class="dropdown-item">Update Document</a>
-                                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#updateDocumentModal" onclick="setUpdateDocId({{$c['id']}},{{$b['id']}})" class="dropdown-item">Document Details</a>
+                                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#" class="dropdown-item">Edit Document Details</a>
+                                                                        
                                                                     </li>
                                                                 </ul>
                                                             </div>
                                                             </li>
                                                             
-                                                            <!-- ADD SCREENING BRIEF CODE HERE -->
+                                                            
 
                                                             @endforeach
                                                         </div>
