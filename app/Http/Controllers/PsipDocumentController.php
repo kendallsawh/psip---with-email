@@ -284,26 +284,6 @@ class PsipDocumentController extends Controller
         return response()->json(['status' => 'found', 'data' => $output]);
     }
 
-    /*public function searchDocTypeDivision(Request $request)
-    {
-        //return 'l';
-        $activity_id = $request->input('activity_id');
-        $results = DocTypeDivision::where('activity_id', $activity_id)->get();
-
-        
-        if ($results->isEmpty()) {
-            return response()->json(['status' => 'not_found']);
-        }
-
-        $output = [];
-        foreach ($results as $result) {
-            $output[] = [
-                'division_name' => $result->getDivisionAttribute(),
-                'doc_type_name' => $result->getDocumentAttribute()
-            ];
-        }
-
-        return response()->json(['status' => 'found', 'data' => $output]);
-    }*/
+    
 
 }

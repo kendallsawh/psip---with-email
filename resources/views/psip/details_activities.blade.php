@@ -57,27 +57,7 @@
                         <input type="number" step="0.01" class="form-control" id="revised_estimates" name="revised_estimates[]" value="">
                     </div>                     
                 </div>
-                <!-- Activities Section (Dynamic) -->
-                <!-- <h6>Activities</h6>                
-                <div class="activity-section mb-3">
-                    <div class="form-group">
-                        <label for="activity_name">Activity Name</label>
-                        <input type="text" class="form-control" id="activity_name" name="activity_name[]" value="">
-                    </div>                   
-                    
-                    <div class="particular-section" style="margin-left: 20px;">
-                        <div class="form-group">
-                            <label for="particulars">Particulars</label>
-                            <input type="text" class="form-control" id="particulars" name="particulars[]" value="">
-                        </div>
-                        <div class="form-group">
-                            <label for="particulars_cost">Particulars Cost</label>
-                            <input type="number" step="0.01" class="form-control" id="particulars_cost" name="particulars_cost[]" value="">
-                        </div>
-                    </div>                    
-                </div> -->
-               
-                <!-- ... -->
+                
 
                 <!-- Activities Section (Dynamic) -->
                 <h6>Activities</h6>

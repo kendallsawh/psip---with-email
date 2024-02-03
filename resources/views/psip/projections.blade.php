@@ -20,7 +20,7 @@
                 <br>
                 <!-- PSIP Details Section for Current Financial Year -->
                 <div class="financial-section mb-4">
-	                <h6>PSIP Details for Current Financial Year</h6>
+	                <h6>PSIP Projection Details for Specified Financial Year</h6>
 	                <div class="form-group">
 	                    <label for="details">Details</label>
 	                    <textarea class="form-control" id="details" name="details" rows="4"></textarea>

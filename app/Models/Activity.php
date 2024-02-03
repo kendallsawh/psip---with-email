@@ -16,7 +16,7 @@ use DB;
 class Activity extends Model
 {
     use HasFactory, SoftDeletes;
-    protected $fillable = ['activity_name','financial_year'];
+    protected $fillable = ['psip_name_id','activity_name','financial_year','allocation','status_id','cancelled_by','deleted_by','actvity_order'];
 
     public function getDocumentsAttribute($value='')
     {

@@ -96,9 +96,10 @@ function showObjective(id) {
     //alert(id);
     $('#objective\\[' + id + '\\]').show();
     $('#op_obj\\[' + id + '\\]').show();
-    $('#activity\\[' + id + '\\]').show();
+    /*reactivate only if necessary. not needed anymore because if the psip is renabled, the activities would show up automatically and planning unit can edit or remove accordingly. note code behind will need to be developed to handle this additional data*/
+/*    $('#activity\\[' + id + '\\]').show();
     $('#label\\[' + id + '\\]').show();
-    $('#formcheck\\[' + id + '\\]').show();
+    $('#formcheck\\[' + id + '\\]').show();*/
 }
 
     

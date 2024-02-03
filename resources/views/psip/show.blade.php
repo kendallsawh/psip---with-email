@@ -1,5 +1,19 @@
 @extends('layouts.app-master')
+@section('css')
+<style type="text/css">
+    .custom-nav-pills .nav-link {
+    background-color: lightgray;
+    color: #606070;  /* Choose the text color you prefer */
+}
 
+.custom-nav-pills .nav-link.active {
+    background-color: #007bff;  /* Bootstrap's default active color; change as needed */
+    color: #ffffff;  /* White text for active pill */
+}
+
+
+</style>
+@endsection
 @section('content')
 @auth
     
@@ -20,247 +34,84 @@
                                     <li><a class="dropdown-item" href="{{ route('psip.edit', $psip->id) }}">Edit PSIP</a></li>
                                     <li><a class="dropdown-item" href="{{ route('psip.projection', $psip->id) }}">Add projections for another year</a></li>
                                     <!-- Modal Trigger Here -->
+                                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#screeningBriefModal">Add Screening Brief</a></li>
+                                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#screeningBriefModal">Add PS Note</a></li>
                                     <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#formModal">Assign/Request a document to be uploaded</a></li>
                                     <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item" href="{{ route('update.all.psip') }}">update all psip(dont touch right now)</a></li>
+                                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#cancelPsipModal">Surpress this PSIP</a></li>
+                                    <!-- the below code shoul not be removed, this is the link to update all psip to the new financial year -->
+                                    <!-- <li><a class="dropdown-item" href="{{ route('update.all.psip') }}">update all psip(dont touch right now)</a></li> -->
+                                </ul>
+                            </div>
+                            @endrole  
+                            @role('ict|contributor')
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-light btn-lg dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#screeningBriefModal">Add Screening Brief</a></li>
                                 </ul>
                             </div>
 
-                            @endrole  
+                            @endrole
                         </h2>
+                        <p><h5 class="text-center">(Status - {{App\Models\Status::find($psip->status_id)->status}})</h5></p>
 
                     </div>
                 </div>
-                
-                <div class="accordion" id="accordionExample">
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="heading">
-                            <button class="accordion-button lead" type="button" data-bs-toggle="collapse" data-bs-target="#collapse" aria-expanded="true" aria-controls="collapse">
-                                Show Fiscal {{
-                                    $psip->psipDetailForCurrentYear
-                                    ? ($psip->psipDetailForCurrentYear->financial_year - 1) . '/' . $psip->psipDetailForCurrentYear->financial_year
-                                    : '(no data found)'
-                                }} Data
-                            </button>
-
-                        </h2>
-                        <div id="collapse" class="accordion-collapse collapse" aria-labelledby="heading" data-bs-parent="#accordionExample">
-                            <div class="accordion-body">
-                                
-                                <div class="d-flex align-items-center">
-                                    <span><strong>Approved Allocation</strong></span>
-                                    <span class="ms-2">{{$psip->psipDetailForCurrentYear? $psip->psipDetailForCurrentYear->psipFinancialsThisYear()->approved_estimates : '0.00'}}</span>
-                                    @role('admin|planning')
-                                    <div class="">
-                                        <div class="btn-group">
-                                            <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#appEstModal">Edit Approved Estimate</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    @endrole
-                                </div>
-                                <div class="d-flex align-items-center mt-2">
-                                    <span><strong>Revised Allocation</strong></span>
-                                    <span class="ms-2">{{$psip->psipDetailForCurrentYear? $psip->psipDetailForCurrentYear->psipFinancialsThisYear()->revised_estimates : '0.00'}}</span>
-                                    @role('admin|planning')
-                                    <div class="">
-                                        <div class="btn-group">
-                                            <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
-
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#revEstModal">Edit Revised Estimate</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    @endrole
-                                </div>
-                                <hr>
-                                <div class="d-flex align-items-center mt-2">
-                                    <canvas id="PolarArea" height="100" width="100"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                  
-                <div class="container mt-4">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="lead">
-                               <p class="text-decoration-underline">
-                                   <strong>Details for {{$psip->psipDetailForCurrentYear? $psip->psipDetailForCurrentYear->financial_year : $financial_year}}</strong>
-                               </p>
-                           </div>                    
-                       </div>                
-                    </div>       
-                    <div class="row">
-                        <div class="col-md-12">                    
-                            <p>                        
-                                {{$psip->psipDetailForCurrentYear?$psip->psipDetailForCurrentYear->details:'No details found'}}
-                            </p>                   
-
-                        </div>
-                    </div>
-                    <hr>
-                </div>
-            </div>
-        </div>
-    </div>
-    <br>
-    
-    <div class="container">
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-                    <!-- document data -->
-                    <div class="col-md-11" id="left-column">
-                        <div class="lead">
-                            <p class="text-decoration-underline">
-                               <strong>{{$psip->psipDetailForCurrentYear?$psip->psipDetailForCurrentYear->financial_year:$financial_year}} project activities for {{$psip->code}}</strong>
-                           </p>
-                       </div>
-                        <h5></h5>
-
-                        <div class="accordion" id="accordionExample">
-                            @foreach($activities as $key => $b)
-                            
-                            <div class="accordion-item">
-                                <h2 class="accordion-header" id="heading{{$key}}">
-                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{$key}}" aria-expanded="true" aria-controls="collapse{{$key}}" onclick="fetchDocTypeDivisions({{$b['id']}})">
-                                        Project {{$b->activity_name}}
-                                    </button>
-                                </h2>
-                                <div id="collapse{{$key}}" class="accordion-collapse collapse" aria-labelledby="heading{{$key}}" data-bs-parent="#accordionExample">
-                                    <div class="accordion-body">
-                                        <!-- remember divisions is incorrectly spelt in the database -->
-                                        @if((auth()->user()->divisions_id == $psip->division_id) || (auth()->user()->id==2))
-                                        <a href="{{ route('psipupload.create', $b->id) }}" class="btn btn-primary btn-sm">Attach a document to this  PSIP</a>
-                                        <div class="list-group">
-                                            @foreach($b->documents as $c)
-
-                                            <a href="{{$c->filepath? asset('storage/'.$c->filepath):'#'}}" class="list-group-item list-group-item-action" target="_blank">                                                
-                                                {{$c->docType->doc_type_name}}
-                                            </a>
-                                            @endforeach
-                                        </div>
-                                        @endif
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            @endforeach
-                        </div>
-                    </div>
-                    <!-- document responsibilities table -->
-                    <div class="col-md-1" id="right-column" style="opacity: 0;transform: translateX(100%);transition: opacity 0.5s ease, transform 0.5s ease;">
-                        <p>Checklist of required documents and who is responsible for uploading</p>
-
-                        <table class="table table-hover " id="tabledoc">
-                            <thead>
-                                <tr>             
-                                    <th>Division Responsible</th>
-                                    <th>Document Required</th>
-                                </tr>
-                            </thead>                        
-                            <tbody>                            
-                                <tr>
-                                    <td></td>
-                                    <td></td>  
-                                </tr>                        
-                            </tbody>                        
-                        </table>
-
-                    </div>
-                </div><hr>
-            </div>            
-        </div>
-    </div>
-    
-    <br>
-    <!-- Projections -->
-    <div class="container">
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <h4 class="text-decoration-underline">Projections</h4>
-                        @if ($psip->psipDetailForCurrentYear)
-                        <p>
-                            <strong>Projections made in {{$psip->psipDetailForCurrentYear->financial_year}} for successive years</strong>
-                            <br>
-                            @foreach($psip->psipDetailForCurrentYear->psipDraftEstimate as $projection)
-                            
-                            Expected spending for {{$projection->draft_est_year}}: ${{$projection->draft_est}}
-                            <br>
-                            Details of projects: {{$projection->details}}
-                            <hr>
-                            @endforeach
-                        </p>
 
 
-                        @else
-                        <p>No prior data</p>
-                        @endif
-
-                    </div>
-                </div>
-                <canvas id="Projections" width="800" height="400"></canvas>
             </div>
         </div>
     </div>
     
-    <br>
-    <!-- previous data -->
     <div class="container">
         <div class="card">
-            <div class="card-body">
-                <div class="row">
-                <div class="col-md-12">
-                    <h4>Information on prior years</h4>
-                    @forelse ($psip->psipDetailsExceptCurrentYear as $detail)
-                    <p>
-                        <strong>Details for {{$detail->financial_year}}</strong>
-                        <br>
-                        {{$detail->details}}
-                    </p>
-                    <p><strong>Approved Estimate</strong><br>{{$detail->approved_estimate}}</p>
-                    <hr>
-                    @empty
-                    <p>No prior data</p>
-                    @endforelse
-                    
-                </div>
-            </div>
-            </div>
+           <!-- Pills navigation -->
+        <ul class="nav nav-pills nav-justified mb-3 custom-nav-pills" id="myTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <a class="nav-link active" id="pill1-tab" data-bs-toggle="pill" href="#pill1" role="tab" aria-controls="pill1" aria-selected="true">Financial Summary</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="pill2-tab" data-bs-toggle="pill" href="#pill2" role="tab" aria-controls="pill2" aria-selected="false">Activities</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="pill3-tab" data-bs-toggle="pill" href="#pill3" role="tab" aria-controls="pill3" aria-selected="false">Projections</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="pill4-tab" data-bs-toggle="pill" href="#pill4" role="tab" aria-controls="pill4" aria-selected="false">Prior Years</a>
+            </li>
+        </ul>
+
+        <!-- Pills content -->
+        <div class="tab-content" id="myTabsContent">
+            @include('psip.pills.pill_1')<!-- Fininacial Pill -->
+            @include('psip.pills.pill_2')<!-- Activities Pill -->
+            @include('psip.pills.pill_3')<!-- Projections Pill -->
+            @include('psip.pills.pill_4')<!-- Prior Years Pill -->
         </div>
+        </div>
+        
     </div>
     
-
-    <!-- blank container template -->
-    <br>
-    <div class="container">
-        <div class="card">
-            <div class="card-body">
-                
-            </div>
-        </div>
-    </div>
+    <!-- if user division == psip division or if admin user or planning user or if user is in planning -->
+    @if((auth()->user()->divisions_id == $psip->division_id) || (auth()->user()->id==2 ||auth()->user()->id==1) || auth()->user()->divisions_id == 15)
     @include('options.assign_doc2')
     @include('options.approved_estimate')
     @include('options.revised_estimate')
-    
+    @include('options.current_expenditure')
+    @include('options.required_documents')
+    @include('options.cancel_activity')
+    @include('options.remove_activity')
+    @include('options.cancel_psip')
+    @include('options.update_doc')
+    @include('options.screening_brief')
+    @endif
 @endauth
 @guest
-    <div class="bg-light p-5 rounded">
-        
+    <div class="bg-light p-5 rounded">        
         <h1>Homepage</h1>
-        <p class="lead">Please login to view the restricted data.</p>
-        
+        <p class="lead">Please login to view the restricted data.</p>        
     </div>
 @endguest
 @endsection
@@ -280,29 +131,32 @@
                 } else if (response.status === 'found') {
                     response.data.forEach(function(row) {
                         $('#tabledoc tbody').append(
-                            '<tr>' +
-                                '<td>' + row.division_name + '</td>' +
+                            '<tr>' +                                
                                 '<td>' + row.doc_type_name + '</td>' +
+                                '<td><span class="badge rounded-pill ' + (row.uploaded === 'Yes' ? 'bg-success' : 'bg-danger') + ' stacked-badge">' + row.uploaded + '</span></td>' +
+
                             '</tr>'
                         );
                     });
                 }
             }
         });
+    }
 
-        const leftColumn = document.getElementById("left-column");
-        const rightColumn = document.getElementById("right-column");
-
-        // Adjust column widths
-        leftColumn.classList.remove("col-md-11");
-        leftColumn.classList.add("col-md-8");
-
-        rightColumn.classList.remove("col-md-1");
-        rightColumn.classList.add("col-md-4");
-
-        // Show right column
-        rightColumn.style.opacity = "1";
-        rightColumn.style.transform = "translateX(0)";
+    function setUpdateDocId(doc_id,activity_id){
+        //alert(doc_id)
+        $('#update_doc_id').val(doc_id);
+        $('#update_activity_doc_id').val(activity_id);
+    }
+    function setSurpesssActivityId(activity_id){
+        //alert(activity_id)
+        
+        $('#surpress_activity').val(activity_id);
+    }
+    function setRemoveActivityId(activity_id){
+        //alert(activity_id)
+        
+        $('#remove_activity').val(activity_id);
     }
 
     
@@ -347,16 +201,16 @@ https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js
     // Decode and extract data
     
     const psipDetail = document.getElementById('PolarArea');
-    const approved = JSON.parse({!! json_encode($psip->psipDetailForCurrentYear->psipFinancialsThisYear()->approved_estimates) !!});
-    const actual = JSON.parse({!! json_encode($psip->psipDetailForCurrentYear->psipFinancialsThisYear()->actual_expenditure) !!});
-    const revised = JSON.parse({!! json_encode($psip->psipDetailForCurrentYear->psipFinancialsThisYear()->revised_estimates) !!});
+    const approved = JSON.parse({!! json_encode($approved_estimates) !!});
+    const actual = JSON.parse({!! json_encode($actual_expenditure) !!});
+    const revised = JSON.parse({!! json_encode($revised_estimates) !!});
     
     Chart.defaults.font.family = "Lato";
     Chart.defaults.font.size = 22;
     Chart.defaults.color = "black";
 
     var birdsData = {
-      labels: ["Actual Expenditure(prev year)","Approved Allocation’(MOP&F)","Revised Allocation’"],
+      labels: ["Actual Expenditure(prev year)","Approved Allocation(MOP&F)","Revised Allocation"],
       datasets: [{
         data: [actual, approved, revised],
         backgroundColor: [

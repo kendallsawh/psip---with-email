@@ -110,7 +110,7 @@ class PsipController extends Controller
             'actual_expenditure' => $actual_expenditure,
             'revised_estimates' => $revised_estimates,
         );
-        return view('psip.test', $data);
+        return view('psip.show', $data);
     }
 
     public function edit($id)
