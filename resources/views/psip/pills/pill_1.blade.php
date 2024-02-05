@@ -61,8 +61,8 @@
                                         <span class="ms-2">{{$psip->psipDetailForCurrentYear? '$'.number_format($psip->psipDetailForCurrentYear->psipFinancialsThisYear()->actual_expenditure,2) : '0.00'}}</span>
                                     </div>
                                     <hr>
-                                    <div class="">
-                                        <canvas id="PolarArea" height="400" width="400"></canvas>
+                                    <div class="d-flex justify-content-center">
+                                        <canvas  id="PolarArea" height="800" width="800"></canvas>
                                     </div>
                             
                                 @else

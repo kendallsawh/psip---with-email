@@ -55,7 +55,7 @@
                                                        Options &#8230;<!-- horizontal ellipsis HTML entity -->
                                                     </button>
                                                     <ul class="dropdown-menu">
-                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#documentModal" class="dropdown-item">View Uploaded Documents</a>
+                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#documentModal" class="dropdown-item">Documents Listing</a>
                                                         <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#screeningBriefModal">Add Screening Brief</a>
                                                         <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#">Add PS Note</a>  
                                                         <a href="#" data-bs-toggle="modal" data-bs-target="#"  class="dropdown-item">Add New Activity</a>
@@ -65,6 +65,18 @@
                                             </div>
                                  
                                         <br>
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="heading_main">
+                                                    <button class="accordion-button" type="button" data-bs-toggle="collapse_main" data-bs-target="#collapse_main" aria-expanded="true" aria-controls="collapse_main">
+                                                        Main PSIP Documents - PS Note, Screening Brief
+                                                    </button>
+                                            </h2>
+                                            <div id="collapse_main" class="accordion-collapse collapse" aria-labelledby="heading_main" data-bs-parent="#accordionExample">
+                                                    <div class="accordion-body">
+                                                    </div>
+                                            </div>
+                                        </div>
+                                        <hr>
                                         <div class="accordion" id="accordionExample">
                                             @foreach($activities as $key => $b)
 
@@ -121,7 +133,7 @@
                                                                 <ul class="dropdown-menu">
                                                                     <li>
                                                                         <a href="#" data-bs-toggle="modal" data-bs-target="#" class="dropdown-item">View Document Details</a>
-                                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#updateDocumentModal" onclick="setUpdateDocId({{$c['id']}},{{$b['id']}})" class="dropdown-item">Update Document</a>
+                                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#updateDocumentModal" onclick="setUpdateDocId({{$c['id']}},{{$b['id']}})" class="dropdown-item">Update Document(Replace Current)</a>
                                                                         <a href="#" data-bs-toggle="modal" data-bs-target="#" class="dropdown-item">Edit Document Details</a>
                                                                         
                                                                     </li>

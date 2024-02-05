@@ -96,6 +96,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function()
             Route::get('/get-psips/{division}', 'PsipDocumentController@getPsips')->name('get.psips');
             Route::get('/get-activities/{psip}', 'PsipDocumentController@getActivities')->name('get.activities');
             Route::post('/screening-brief/{psip}', 'PsipDocumentController@addScreeningBrief')->name('psipupload.addscreeningbrief');
+            Route::post('/screening-brief/{psip}', 'PsipDocumentController@addScreeningBrief')->name('psipupload.addpsnote');//new route to add
 
             //Route::get('/show', 'PsipDocumentController@show')->name('psipupload.show');
         });

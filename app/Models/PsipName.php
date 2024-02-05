@@ -8,11 +8,13 @@ use App\Models\FinancialYear;
 use App\Models\PsipDetail;
 use App\Models\Division;
 use App\Models\Status;
+use App\Models\PsipScreeningBrief;
+use App\Models\PsipPsNote;
 
 class PsipName extends Model
 {
     use HasFactory;
-    protected $fillable = ['psip_name','code','description','division_id','groups_id','updated_by','created_by'];
+    protected $fillable = ['psip_name','code','description','division_id','groups_id','updated_by','created_by','status_id','cancelled_by'];
     public function division()
     {
         return $this->belongsTo('App\Models\Division', 'division_id', 'id');
@@ -33,10 +35,10 @@ class PsipName extends Model
         return $this->hasMany('App\Models\Activity', 'psip_name_id', 'id');
     }
 
-    public function screeningBrief()
+    /*public function screeningBrief()
     {
         return $this->hasMany('App\Models\PsipScreeningBrief', 'psip_names_id', 'id');
-    }
+    }*/
 
     public function status()
     {
@@ -72,4 +74,35 @@ class PsipName extends Model
         
         return $this->hasMany(PsipDetail::class);
     }
+    /*screening brief functions*/
+    public function mostRecentScreeningBrief()
+    {
+        return $this->hasOne(PsipScreeningBrief::class, 'psip_names_id', 'id')->latest();
+    }
+    
+    public function screeningBriefs()
+    {
+        return $this->hasMany(PsipScreeningBrief::class, 'psip_names_id', 'id');
+    }
+
+    public function screeningBriefsWithTrashed()
+    {
+        return $this->hasMany(PsipScreeningBrief::class, 'psip_names_id', 'id')->withTrashed();
+    }
+    /*ps note functions*/
+    public function mostRecentPsNote()
+    {
+    // Assuming 'created_at' or 'id' for ordering, adjust as necessary
+        return $this->hasOne(PsipPsNote::class, 'psip_names_id', 'id')->latest();
+    }
+    public function psNotes()
+    {
+        return $this->hasMany(PsipPsNote::class, 'psip_names_id', 'id');
+    }
+    public function psNotesWithTrashed()
+    {
+        return $this->hasMany(PsipPsNote::class, 'psip_names_id', 'id')->withTrashed();
+    }
+
+
 }

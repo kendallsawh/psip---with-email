@@ -199,7 +199,7 @@ https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js
 <script>
     
     // Decode and extract data
-    
+
     const psipDetail = document.getElementById('PolarArea');
     const approved = JSON.parse({!! json_encode($approved_estimates) !!});
     const actual = JSON.parse({!! json_encode($actual_expenditure) !!});
@@ -210,7 +210,7 @@ https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js
     Chart.defaults.color = "black";
 
     var birdsData = {
-      labels: ["Actual Expenditure(prev year)","Approved Allocation(MOP&F)","Revised Allocation"],
+      labels: ["Actual Expenditure","Approved Allocation(MOP&F)","Revised Allocation"],
       datasets: [{
         data: [actual, approved, revised],
         backgroundColor: [
@@ -231,13 +231,17 @@ https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js
         legend: {
           align: "start"
         }
-      }
+
+      },
+      responsive: false, // Prevents resizing to the parent container
+        maintainAspectRatio: false // Maintains the aspect ratio; set to false if aspect ratio is not a concern
     };
 
     var polarAreaChart = new Chart(psipDetail, {
       type: 'polarArea',
       data: birdsData,
       options: chartOptions
+      
     });
 
 </script>

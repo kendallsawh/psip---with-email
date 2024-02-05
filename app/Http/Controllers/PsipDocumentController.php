@@ -11,6 +11,8 @@ use App\Models\PsipTag;
 use App\Models\Activity;
 use App\Models\DocTypeDivision;
 use App\Models\ReplacedPsipDoc;
+use App\Models\PsipScreeningBrief;
+use App\Models\PsipPsNote;
 use DB;
 use Illuminate\Support\Facades\Log;
 use App\Events\DocumentUploadedEvent;
@@ -194,6 +196,11 @@ class PsipDocumentController extends Controller
     }
 
     public function addScreeningBrief(Request $request,PsipName $psip)
+    {
+        
+    }
+
+    public function addPSNote(Request $request,PsipName $psip)
     {
         
     }
