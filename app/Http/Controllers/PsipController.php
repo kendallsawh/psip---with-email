@@ -184,6 +184,23 @@ class PsipController extends Controller
 
         return redirect()->route('psip.show',$psip->id)->with('success', 'PSIP updated successfully');
     }
+    public function updatePsipDetail(Request $request,PsipName $psip)
+    {
+        /*$psipdetail = $psip->psipDetailForCurrentYear->psipFinancialsLatest();
+        $psipdetail->details = $request->input('psip_detail');
+        $psipdetail->save();*/
+        // Update PsipDetailForCurrentYear
+        /*$psip->psipDetailForCurrentYear->update([
+            'details' => trim($request->input('psip_detail')),
+        ]);*/
+        //return $psip->psipDetailForCurrentYear;
+        $trimmedDetail = preg_replace('/^\p{Z}+|\p{Z}+$/u', '', $request->input('psip_detail'));
+        $psip->psipDetailForCurrentYear->update([
+            'details' => $trimmedDetail,
+        ]);
+
+        return redirect()->route('psip.show', $psip->id);
+    }
 
     public function updateApproved(Request $request,PsipName $psip)
     {

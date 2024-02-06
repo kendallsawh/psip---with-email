@@ -96,7 +96,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function()
             Route::get('/get-psips/{division}', 'PsipDocumentController@getPsips')->name('get.psips');
             Route::get('/get-activities/{psip}', 'PsipDocumentController@getActivities')->name('get.activities');
             Route::post('/screening-brief/{psip}', 'PsipDocumentController@addScreeningBrief')->name('psipupload.addscreeningbrief');
-            Route::post('/screening-brief/{psip}', 'PsipDocumentController@addScreeningBrief')->name('psipupload.addpsnote');//new route to add
+            Route::post('/ps-note/{psip}', 'PsipDocumentController@addPSNote')->name('psipupload.addpsnote');//new route to add to permissions
 
             //Route::get('/show', 'PsipDocumentController@show')->name('psipupload.show');
         });
@@ -125,6 +125,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function()
             Route::post('/projection/{psipname}', 'PsipProjectionController@store')->name('psip.store_projection');
             Route::post('/current-expenditure/{psip}', 'PsipController@updateCurrentExpenditure')->name('psip.updatecurrexp');
             Route::post('/surpress-psip/{psip}', 'PsipController@surpressPsip')->name('psip.cancelpsip');
+            Route::post('/psip-detail-edit/{psip}', 'PsipController@updatePsipDetail')->name('psip.editpsipdetails');//new route to add to permissions
             
            
         });

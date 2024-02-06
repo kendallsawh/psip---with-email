@@ -6,9 +6,20 @@
                                 <div class="row">
                                         <div class="col-md-12">
                                             <div class="lead">
-                                            <p class="text-decoration-underline">
+                                            <p class="text-decoration-underline d-inline-block mb-0">
                                                 <strong>Details for {{$psip->psipDetailForCurrentYear? $psip->psipDetailForCurrentYear->financial_year : $financial_year}}</strong>
                                             </p>
+                                            @if((auth()->user()->divisions_id == $psip->division_id) || (auth()->user()->id==2 ||auth()->user()->id==1) || auth()->user()->divisions_id == 15)
+                                            <div class="dropdown d-inline-block">
+                                                    <button class="btn btn-outline-secondary btn-sm" type="button" id="dropdownMenuButton8" data-bs-toggle="dropdown" aria-expanded="false">
+                                                      &#8230;<!-- horizontal ellipsis HTML entity -->
+                                                    </button>
+                                                    <ul class="dropdown-menu">
+                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#psipDetailModal" class="dropdown-item">Edit Details</a>
+                                                                                                 
+                                                    </ul>
+                                                </div>
+                                            @endif
                                         </div>                    
                                     </div>                
                                 </div>       
@@ -57,7 +68,7 @@
                                                     <ul class="dropdown-menu">
                                                         <a href="#" data-bs-toggle="modal" data-bs-target="#documentModal" class="dropdown-item">Documents Listing</a>
                                                         <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#screeningBriefModal">Add Screening Brief</a>
-                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#">Add PS Note</a>  
+                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#psNoteModal">Add PS Note</a>  
                                                         <a href="#" data-bs-toggle="modal" data-bs-target="#"  class="dropdown-item">Add New Activity</a>
                                                         <a href="#" data-bs-toggle="modal" data-bs-target="#"  class="dropdown-item">Reorder Activities</a>                                         
                                                     </ul>
@@ -68,7 +79,7 @@
                                         <div class="accordion-item">
                                             <h2 class="accordion-header" id="heading_main">
                                                     <button class="accordion-button" type="button" data-bs-toggle="collapse_main" data-bs-target="#collapse_main" aria-expanded="true" aria-controls="collapse_main">
-                                                        Main PSIP Documents - PS Note, Screening Brief
+                                                        Main Project Documents - PS Note, Screening Brief
                                                     </button>
                                             </h2>
                                             <div id="collapse_main" class="accordion-collapse collapse" aria-labelledby="heading_main" data-bs-parent="#accordionExample">
@@ -83,7 +94,7 @@
                                             <div class="accordion-item">
                                                 <h2 class="accordion-header" id="heading{{$key}}">
                                                     <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{$key}}" aria-expanded="true" aria-controls="collapse{{$key}}" onclick="fetchDocTypeDivisions({{$b['id']}})">
-                                                        Project {{$b->activity_name}}
+                                                         {{$b->activity_name}}
                                                     </button>
                                                 </h2>
                                                 <div id="collapse{{$key}}" class="accordion-collapse collapse" aria-labelledby="heading{{$key}}" data-bs-parent="#accordionExample">
@@ -110,6 +121,10 @@
                                                                         <button class="btn btn-danger btn-sm dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#activityRemoveModal" onclick="setRemoveActivityId({{$b['id']}})">
                                                                             Remove this activity
                                                                             <span class="badge rounded-pill bg-danger stacked-badge">!</span>
+                                                                        </button>
+                                                                        <button class="btn btn-danger btn-sm dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#" >
+                                                                            Set activity as completed
+                                                                            <span class="badge rounded-pill bg-success stacked-badge">:)</span>
                                                                         </button>
                                                                         @endif
                                                                     

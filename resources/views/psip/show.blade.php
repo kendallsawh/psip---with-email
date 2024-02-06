@@ -35,7 +35,7 @@
                                     <li><a class="dropdown-item" href="{{ route('psip.projection', $psip->id) }}">Add projections for another year</a></li>
                                     <!-- Modal Trigger Here -->
                                     <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#screeningBriefModal">Add Screening Brief</a></li>
-                                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#screeningBriefModal">Add PS Note</a></li>
+                                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#psNoteModal">Add PS Note</a></li>
                                     <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#formModal">Assign/Request a document to be uploaded</a></li>
                                     <li><hr class="dropdown-divider"></li>
                                     <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#cancelPsipModal">Surpress this PSIP</a></li>
@@ -49,7 +49,7 @@
                                 <button type="button" class="btn btn-light btn-lg dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                 </button>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#screeningBriefModal">Add Screening Brief</a></li>
+                                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#psNoteModal">Add Screening Brief</a></li>
                                 </ul>
                             </div>
 
@@ -97,6 +97,7 @@
     <!-- if user division == psip division or if admin user or planning user or if user is in planning -->
     @if((auth()->user()->divisions_id == $psip->division_id) || (auth()->user()->id==2 ||auth()->user()->id==1) || auth()->user()->divisions_id == 15)
     @include('options.assign_doc2')
+    @include('options.edit_psip_detail')
     @include('options.approved_estimate')
     @include('options.revised_estimate')
     @include('options.current_expenditure')
@@ -106,6 +107,7 @@
     @include('options.cancel_psip')
     @include('options.update_doc')
     @include('options.screening_brief')
+    @include('options.add_ps_note')
     @endif
 @endauth
 @guest

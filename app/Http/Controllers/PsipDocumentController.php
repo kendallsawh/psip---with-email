@@ -75,8 +75,8 @@ class PsipDocumentController extends Controller
                         sleep(2);
                     $file = $request->file_upload;
                     if (!empty($file)) {
-                        $activity_code = str_replace(' ', '_', $activity->id);
-                        $doc_name_sanitized = str_replace(' ', '_', $docname);
+                        $activity_code = str_reppreg_replace('/[\/\s\\\\,.:;\'"!?]+/', '_', $activity->id);
+                        $doc_name_sanitized = preg_replace('/[\/\s\\\\,.:;\'"!?]+/', '_', $docname);
                         $doc = $activity_code.'_'.$doc_name_sanitized.'_Scan_'.md5($file->getClientOriginalName()).'.'.$file->extension();
                         // upload document
                         $file->storeAs('public/documents', $doc);
@@ -153,8 +153,8 @@ class PsipDocumentController extends Controller
                     $file = $request->file_upload;
                     //$file->storeAs('public/documents', 'test');
                     if (!empty($file)) {
-                        $activity_code = str_replace(' ', '_', $activity_id);
-                        $doc_name_sanitized = str_replace(' ', '_', $docname);
+                        $activity_code = preg_replace('/[\/\s\\\\,.:;\'"!?]+/', '_', $activity_id);
+                        $doc_name_sanitized = preg_replace('/[\/\s\\\\,.:;\'"!?]+/', '_', $docname);
                         $doc = $activity_code.'_'.$doc_name_sanitized.'_Scan_'.md5($file->getClientOriginalName()).'.'.$file->extension();
                        
                         $file->storeAs('public/documents', $doc);
@@ -186,9 +186,9 @@ class PsipDocumentController extends Controller
             return redirect()->route('psip.show',['psip' => $activity->psipName->id])//replace this and remove comment when finished
             ->withSuccess(__('PSIP document saved successfully.'));
         }
-        catch (\Exception $e) {
+        catch (Exception $e) {
             DB::rollBack();
-            Log::error($e);
+            Log::error(dd($e));
             //Log::error($e->getMessage());//log error to log file
             return dd($e);//replace this and remove comment when finished
 
@@ -197,12 +197,84 @@ class PsipDocumentController extends Controller
 
     public function addScreeningBrief(Request $request,PsipName $psip)
     {
-        
+        $document = DocType::find(6);//screening brief
+        DB::beginTransaction();//BEGIN THE PROCESS
+        try {
+            $screeningbrief = new PsipScreeningBrief;
+            $screeningbrief->psip_names_id = $psip->id;
+            /*$screeningbrief->file_name = ;
+            $screeningbrief->details = ;*/
+            //$screeningbrief->previous_note_id = ;
+            
+            $docname=trim($document->doc_type_name);
+            /*upload and record file*/
+            if (isset($request->file_upload)) {
+                        sleep(2);
+                    $file = $request->file_upload;
+                    
+                    if (!empty($file)) {
+                        $psipid_code = str_replace(' ', '_', $psip->id).'_'.str_replace(' ', '_', $psip->code);
+                        $doc_name_sanitized = preg_replace('/[\/\s\\\\,.:;\'"!?]+/', '_', $docname);
+                        $doc = $psipid_code.'_'.$doc_name_sanitized.'_Scan_'.md5($file->getClientOriginalName()).'.'.$file->extension();
+                       
+                        $file->storeAs('public/documents/screeningbrief', $doc);
+
+
+                        $screeningbrief->filepath = "documents/screeningbrief/".$doc;
+                        $screeningbrief->file_type = $file->extension();
+                        $screeningbrief->save();
+                        event(new DocumentUploadedEvent(\Auth::user(), $document));//this is the mail notification
+                    }
+                }
+            DB::commit();
+            return redirect()->route('psip.show',['psip' => $psip->id])//replace this and remove comment when finished
+            ->withSuccess(__('PSIP document saved successfully.'));
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::error(dd($e));
+            return dd($e);//replace this and remove comment when finished
+        }
     }
 
     public function addPSNote(Request $request,PsipName $psip)
     {
-        
+        $document = DocType::find(2);// psnote
+        DB::beginTransaction();//BEGIN THE PROCESS
+        try {
+            $psnote = new PsipScreeningBrief;
+            $psnote->psip_names_id = $psip->id;
+            /*$psnote->file_name = ;
+            $psnote->details = ;*/
+            //$psnote->previous_note_id = ;
+            
+            $docname=trim($document->doc_type_name);
+            /*upload and record file*/
+            if (isset($request->file_upload)) {
+                        sleep(2);
+                    $file = $request->file_upload;
+                    
+                    if (!empty($file)) {
+                        $psipid_code = str_replace(' ', '_', $psip->id).'_'.str_replace(' ', '_', $psip->code);
+                        $doc_name_sanitized = preg_replace('/[\/\s\\\\,.:;\'"!?]+/', '_', $docname);
+                        $doc = $psipid_code.'_'.$doc_name_sanitized.'_Scan_'.md5($file->getClientOriginalName()).'.'.$file->extension();
+                       
+                        $file->storeAs('public/documents/psnote', $doc);
+
+
+                        $psnote->filepath = "documents/psnote/".$doc;
+                        $psnote->file_type = $file->extension();
+                        $psnote->save();
+                        event(new DocumentUploadedEvent(\Auth::user(), $document));//this is the mail notification
+                    }
+                }
+            DB::commit();
+            return redirect()->route('psip.show',['psip' => $psip->id])//replace this and remove comment when finished
+            ->withSuccess(__('PSIP document saved successfully.'));
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::error(dd($e));
+            return dd($e);//replace this and remove comment when finished
+        }
     }
 
     public function assign()

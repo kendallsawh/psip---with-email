@@ -39,9 +39,7 @@
                                     </td>
                                     <td>{{ $psip->psip_name }} - <b>{{ $psip->code }}</b>
                                         <p id="op_obj[{{ $psip->id }}]" style="display:none;"><b>Please update objectives as necessary</b></p>
-                                        <textarea class="form-control" name="objective[{{ $psip->id }}]" id="objective[{{ $psip->id }}]" style="display:none" rows="4">
-                                            {{ $psip->psipDetails->first()->details }}
-                                        </textarea>
+                                        <textarea class="form-control" name="objective[{{ $psip->id }}]" id="objective[{{ $psip->id }}]" style="display:none" rows="4">{{ $psip->psipDetailsLast->first()->details }}</textarea>
                                         
                                         @foreach($psip->activities as $activity)
                                         <div class="form-check" id="formcheck[{{ $psip->id }}]" style="display:none">
