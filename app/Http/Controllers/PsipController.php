@@ -17,7 +17,9 @@ use App\Models\ActivityParticular;
 use App\Models\DocTypeDivision;
 use App\Models\DocType;
 use App\Models\PsipDraftEstimate;
+use App\Models\DocGroup;
 use Carbon\Carbon;
+use DB;
 
 
 class PsipController extends Controller
@@ -79,9 +81,10 @@ class PsipController extends Controller
      */
     public function show(PsipName $psip)
     {
+        //return $psip->screeningBriefs;
         $financial_year_record = FinancialYear::first();
         $financial_year = $financial_year_record ? $financial_year_record->year : now()->year;
-        $activities = Activity::where('psip_name_id', $psip->id)->where('financial_year',$financial_year)->get();
+        $activities = Activity::where('psip_name_id', $psip->id)->where('financial_year',$financial_year)->orderBy('activity_order','ASC')->get();
         $psipdetails = $psip->psipDetailForCurrentYear;
         if (is_null($psipdetails)) {
             $draft_estimates = json_encode(null);
@@ -109,6 +112,7 @@ class PsipController extends Controller
             'approved_estimates' => $approved_estimates,
             'actual_expenditure' => $actual_expenditure,
             'revised_estimates' => $revised_estimates,
+            'docGroups' => DocGroup::all(),
         );
         return view('psip.show', $data);
     }
@@ -186,14 +190,7 @@ class PsipController extends Controller
     }
     public function updatePsipDetail(Request $request,PsipName $psip)
     {
-        /*$psipdetail = $psip->psipDetailForCurrentYear->psipFinancialsLatest();
-        $psipdetail->details = $request->input('psip_detail');
-        $psipdetail->save();*/
-        // Update PsipDetailForCurrentYear
-        /*$psip->psipDetailForCurrentYear->update([
-            'details' => trim($request->input('psip_detail')),
-        ]);*/
-        //return $psip->psipDetailForCurrentYear;
+        
         $trimmedDetail = preg_replace('/^\p{Z}+|\p{Z}+$/u', '', $request->input('psip_detail'));
         $psip->psipDetailForCurrentYear->update([
             'details' => $trimmedDetail,

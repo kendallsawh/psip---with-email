@@ -63,6 +63,7 @@ class PsipDocumentController extends Controller
             $psipdoc->doc_types_id = $request->doc_type;
             $psipdoc->doc_title = $request->title;
             $psipdoc->description = $request->description;
+            $psipdoc->created_by = auth()->id();
             $psip = $activity->psipName->id;
             $psipdoc->save();
             $docname=trim(DocType::find($request->doc_type)->doc_type_name);
@@ -215,7 +216,7 @@ class PsipDocumentController extends Controller
                     if (!empty($file)) {
                         $psipid_code = str_replace(' ', '_', $psip->id).'_'.str_replace(' ', '_', $psip->code);
                         $doc_name_sanitized = preg_replace('/[\/\s\\\\,.:;\'"!?]+/', '_', $docname);
-                        $doc = $psipid_code.'_'.$doc_name_sanitized.'_Scan_'.md5($file->getClientOriginalName()).'.'.$file->extension();
+                        $doc = $psipid_code.'_'.$doc_name_sanitized.'_'.md5($file->getClientOriginalName()).'.'.$file->extension();
                        
                         $file->storeAs('public/documents/screeningbrief', $doc);
 
@@ -241,7 +242,7 @@ class PsipDocumentController extends Controller
         $document = DocType::find(2);// psnote
         DB::beginTransaction();//BEGIN THE PROCESS
         try {
-            $psnote = new PsipScreeningBrief;
+            $psnote = new PsipPsNote;
             $psnote->psip_names_id = $psip->id;
             /*$psnote->file_name = ;
             $psnote->details = ;*/
@@ -256,7 +257,7 @@ class PsipDocumentController extends Controller
                     if (!empty($file)) {
                         $psipid_code = str_replace(' ', '_', $psip->id).'_'.str_replace(' ', '_', $psip->code);
                         $doc_name_sanitized = preg_replace('/[\/\s\\\\,.:;\'"!?]+/', '_', $docname);
-                        $doc = $psipid_code.'_'.$doc_name_sanitized.'_Scan_'.md5($file->getClientOriginalName()).'.'.$file->extension();
+                        $doc = $psipid_code.'_'.$doc_name_sanitized.'_'.md5($file->getClientOriginalName()).'.'.$file->extension();
                        
                         $file->storeAs('public/documents/psnote', $doc);
 

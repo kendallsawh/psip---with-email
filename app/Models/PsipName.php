@@ -32,7 +32,7 @@ class PsipName extends Model
 
     public function activities()
     {
-        return $this->hasMany('App\Models\Activity', 'psip_name_id', 'id');
+        return $this->hasMany('App\Models\Activity', 'psip_name_id', 'id')->orderBy('activity_order','ASC');
     }
 
     /*public function screeningBrief()
@@ -66,7 +66,7 @@ class PsipName extends Model
     public function psipDetailsLast()
     {
         $year = FinancialYear::first()->year; // Retrieve the year from the FinancialYear model
-        return $this->hasMany(PsipDetail::class)->where('financial_year', '<>', $year)->orderBy('financial_year','desc')->first();
+        return $this->hasMany(PsipDetail::class)->where('financial_year', '<>', $year)->orderBy('financial_year','desc')->get();
     }
 
     public function psipDetails()

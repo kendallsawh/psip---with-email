@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PsipPsNote extends Model
 {
-    use HasFactorySoftDeletes;
+    use HasFactory,SoftDeletes;
 
     public function psip()
     {

@@ -141,10 +141,22 @@ Route::group(['namespace' => 'App\Http\Controllers'], function()
            
             Route::get('/add', 'ActivityController@create')->name('activities.create');
             Route::post('/store', 'ActivityController@store')->name('activities.store');
+            Route::get('/activity-edit/{psip}', 'ActivityController@edit')->name('activities.edit');//new route to add to permissions
+            Route::post('/activity-update/{psip}', 'ActivityController@update')->name('activities.update');//new route to add to permissions
             Route::post('/surpress-activity', 'ActivityController@surpressActivity')->name('activities.surpressactivity');
             Route::post('/cancel-activity', 'ActivityController@softDelete')->name('activities.removeactivity');
             
         });
+
+        Route::group(['prefix' => 'activity-photo'],function(){           
+           
+            Route::get('image-gallery/{id}', 'ActivityPhotoController@index')->name('activityphoto.index');
+            Route::post('image-gallery/{id}', 'ActivityPhotoController@upload')->name('activityphoto.upload');
+            Route::delete('image-gallery/{id}', 'ActivityPhotoController@destroy')->name('activityphoto.destroy');
+            
+        });
+
+        
         // admin routes
         Route::get('/update_financial', 'OptionsController@update_psip')->name('update.psip.financials');
         Route::post('/update_financial', 'OptionsController@update_psip_store')->name('update.psip.financials.store');

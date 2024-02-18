@@ -25,12 +25,26 @@ class OptionsController extends Controller
      */
     public function update_psip()
     {
-        $year = FinancialYear::first()->year;
+        /*$year = FinancialYear::first()->year;
         $psips = PsipName::whereHas('psipDetails', function ($query) use($year) {
                             $query->where('financial_year', '<>', $year);
                             })->with(['psipDetails' => function ($query) use($year) {
                             $query->where('financial_year', '<>', $year)->orderBy('financial_year','desc')->get();}])->get();
-        //return $psips;
+        return $psips->first();*/
+
+        $year = FinancialYear::first()->year;
+        $psips = PsipName::whereHas('psipDetails', function ($query) use($year) {
+            $query->where('financial_year', '<>', $year);
+        })
+        ->with(['psipDetails' => function ($query) use($year) {
+            $query->where('financial_year', '<>', $year)->orderBy('financial_year','desc');
+        }])
+        ->get();
+
+        // Assuming you want the psip_details of the first PsipName that meets the criteria
+        //$psipDetails = optional($psips->first())->psipDetails->first()->details;
+
+        //return $psipDetails;
        /* $psips = PsipName::where('status_id','<>',3)->get();*/
         return view('options.update_psip_financial',compact('psips'));
     }
@@ -78,7 +92,7 @@ class OptionsController extends Controller
 
         
         
-        //return dd($request->all());
+        return back();
     }
 
     /**

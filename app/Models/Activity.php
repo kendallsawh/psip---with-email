@@ -16,7 +16,7 @@ use DB;
 class Activity extends Model
 {
     use HasFactory, SoftDeletes;
-    protected $fillable = ['psip_name_id','activity_name','financial_year','allocation','status_id','cancelled_by','deleted_by','actvity_order'];
+    protected $fillable = ['psip_name_id','activity_name','financial_year','allocation','status_id','cancelled_by','deleted_by','activity_order','updated_by'];
 
     public function getDocumentsAttribute($value='')
     {
@@ -36,6 +36,11 @@ class Activity extends Model
     public function psipDocs()
     {
         return $this->hasMany('App\Models\PsipDoc', 'activities_id', 'id');
+    }
+
+    public function activityPhotos()
+    {
+        return $this->hasMany('App\Models\ActivityPhoto', 'activities_id', 'id');
     }
 
     public function status()

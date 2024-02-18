@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 use App\Models\PsipName;
 use App\Models\Division;
 use App\Models\Activity;
+use DB;
 use App\Models\FinancialYear;//there is a middleware updatefinancialyear that automatically updates the year record in the database on september 30th
 
 class ActivityController extends Controller
@@ -93,7 +94,15 @@ class ActivityController extends Controller
      */
     public function edit($id)
     {
-        //
+        $psip = PsipName::with([
+            'psipDetailForCurrentYear', 
+            'psipDetailForCurrentYear.psipFinancials', 
+            'activities',
+            'activities.activityParticulars'
+        ])->find($id);
+
+
+        return view('psipactivity.edit_activity', compact('psip'));
     }
 
     /**
@@ -103,10 +112,94 @@ class ActivityController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    /*public function update(Request $request, $id)
     {
-        //
+        $psip = PsipName::findOrFail($id);
+        // Update Activities
+        DB::beginTransaction();
+        try {
+            $activityNames = $request->input('activity_name');
+            $particulars = $request->input('particulars');
+            $particularsCost = $request->input('particulars_cost');
+
+            foreach ($psip->activities as $index => $activity) {
+                $activity->update([
+                    'activity_name' => $activityNames[$index] ?? null,
+                    'updated_by' => $loggedInUserId,
+                ]);
+
+                foreach ($activity->activityParticulars as $pIndex => $particular) {
+                    $particular->update([
+                        'particulars' => $particulars[$pIndex] ?? null,
+                        'particulars_cost' => $particularsCost[$pIndex] ?? null,
+                        'updated_by' => $loggedInUserId,
+                    ]);
+                }
+            }
+            DB::commit();
+            return redirect()->route('psip.show',$psip->id)->with('success', 'PSIP updated successfully');
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::error($e->getMessage());
+            return redirect('/activity-edit/'.$psip->id)
+            ->withInput();
+        }
+        
+    }*/
+
+    public function update(Request $request, $id)
+{
+    //return dd($request->all());
+    $psip = PsipName::findOrFail($id);
+    $activityOrders = $request->input('activity_order',[]);
+    $activityIds = $request->input('activity_id',[]);
+    // Update Activities
+    DB::beginTransaction();
+    try {
+        $activityNames = $request->input('activity_name',[]);
+        $particulars = $request->input('particulars');
+        $particularsCost = $request->input('particulars_cost');
+        $loggedInUserId = auth()->id(); // Assuming you're getting the logged-in user's ID like this
+        //return dd($activityOrders);
+
+        foreach ($activityIds as  $activityId) {
+            $activity = Activity::find($activityId);
+            //return dd($activityOrders[$activityId],$activityNames[$activityId]);
+            if ($activity) {
+                $activity->update([
+                    'activity_order' => $activityOrders[$activityId],
+                    'activity_name' => $activityNames[$activityId], // Ensure this matches how you're sending the data
+                    'updated_by' => $loggedInUserId,
+                ]);
+                
+                    /*$activity->activity_order = $activityOrders[$activityId];
+                    $activity->activity_name = $activityNames[$activityId]; // Ensure this matches how you're sending the data
+                    $activity->updated_by = $loggedInUserId;
+                    $activity->save();*/
+
+                // Assuming particulars and particularsCost are sent in a way that they can be matched by activityId
+                if (isset($particulars[$activityId]) && isset($particularsCost[$activityId])) {
+                    foreach ($activity->activityParticulars as $pIndex => $particular) {
+                        $particular->update([
+                            'particulars' => $particulars[$pIndex][$particular] ?? null,
+                            'particulars_cost' => $particularsCost[$pIndex][$particular] ?? null,
+                            'updated_by' => $loggedInUserId,
+                        ]);
+                    }
+                }
+            }
+        }
+
+        DB::commit();
+        return redirect()->route('psip.show', $psip->id)->with('success', 'PSIP updated successfully');
+    } catch (Exception $e) {
+        DB::rollBack();
+        Log::error($e->getMessage());
+        return redirect('activity/activity-edit/'.$psip->id)
+                ->withInput();
     }
+}
+
 
     /**
      * Remove the specified resource from storage.

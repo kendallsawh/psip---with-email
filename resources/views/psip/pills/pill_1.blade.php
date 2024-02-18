@@ -15,7 +15,7 @@
                                         <div class="">
                                             <div class="dropdown">
                                                 <button class="btn btn-light" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false">
-                                                    &#8230;<!-- horizontal ellipsis HTML entity  -->
+                                                   <i class="bi bi-three-dots"></i>
                                                 </button>
                                                 <ul class="dropdown-menu">
                                                     <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#currExpModal">Edit Current Expenditure</a></li>
@@ -31,7 +31,7 @@
                                             <div class="">
                                                 <div class="dropdown">
                                                     <button class="btn btn-light" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                                        &#8230;<!-- horizontal ellipsis HTML entity  -->
+                                                        <i class="bi bi-three-dots"></i>
                                                     </button>
                                                     <ul class="dropdown-menu">
                                                         <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#appEstModal">Edit Approved Estimate</a></li>
@@ -47,7 +47,7 @@
                                             <div class="">
                                                 <div class="dropdown">
                                                     <button class="btn btn-light" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
-                                                        &#8230;<!-- horizontal ellipsis HTML entity  -->
+                                                        <i class="bi bi-three-dots"></i>
                                                     </button>
                                                     <ul class="dropdown-menu">
                                                         <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#revEstModal">Edit Revised Estimate</a></li>
