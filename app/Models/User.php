@@ -8,6 +8,8 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Models\PsipName;
+use App\Models\Division;
 
 class User extends Authenticatable
 {
@@ -76,6 +78,21 @@ class User extends Authenticatable
     public function createdByPsipNames()
     {
         return $this->hasMany('App\Models\PsipName', 'created_by', 'id');
+    }
+
+    /**
+     * Get all PsipName records that belong to the same division.
+     */
+    public function psipNames()
+    {
+        return $this->hasManyThrough(
+            PsipName::class, // The target model you want to access
+            Division::class, // The intermediate model (if you have one, assuming Division is a model that represents the divisions)
+            'id', // Foreign key on the Division table
+            'division_id', // Foreign key on the PsipName table
+            'divisions_id', // Local key on the User table
+            'id' // Local key on the Division table (if Division is a model, otherwise adjust accordingly)
+        );
     }
 
 }

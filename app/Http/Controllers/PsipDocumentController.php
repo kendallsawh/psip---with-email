@@ -174,7 +174,7 @@ class PsipDocumentController extends Controller
             $log_old_doc->doc_types_id = $document->doc_types_id;
             $log_old_doc->activities_id = $document->activities_id;
             $log_old_doc->description = $document->description;
-            $log_old_doc->previous_doc_id = $document->id;
+            $log_old_doc->previous_doc_id = $document->previous_doc_id;
             $log_old_doc->doc_group_id = $document->doc_group_id;
             $log_old_doc->created_by = $document->created_by;
             $log_old_doc->save();

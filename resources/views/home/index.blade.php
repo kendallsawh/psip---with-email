@@ -8,6 +8,10 @@
       text-align: center; /* Centers the text */
   }
 
+.icon-spacing {
+    margin-right: 5px; /* Adjust the space as needed */
+}
+
 
 </style>
 @endsection
@@ -32,6 +36,25 @@
             </div>
 
             <br>
+            <hr>
+
+            @if(auth()->user()->psipNames->isNotEmpty())
+            <div class="row">
+                <div class="col-lg-12">
+                    <h5>Your PSIPs</h5>
+                </div>
+            </div>
+            <div class="row">
+                @foreach (auth()->user()->psipNames as $psipName)
+                <div class="col-lg-1">
+                    <a href="{{ route('psip.show', $psipName->id) }}" class="btn btn-info text-light" style="text-decoration: none;">
+                        <i class="bi bi-folder"></i> {{$psipName->code}}
+                    </a>
+                </div>
+                @endforeach
+            </div>
+            <hr>
+            @endif
 
             <table class="table  table-hover">
                 <thead>
