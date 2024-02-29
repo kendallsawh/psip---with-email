@@ -104,5 +104,20 @@ class PsipName extends Model
         return $this->hasMany(PsipPsNote::class, 'psip_names_id', 'id')->withTrashed();
     }
 
+    /*achievement report functions*/
+    public function mostRecentAchievementReport()
+    {
+    // Assuming 'created_at' or 'id' for ordering, adjust as necessary
+        return $this->hasOne(PsipAchievementReport::class, 'psip_names_id', 'id')->latest();
+    }
+    public function achievementReports()
+    {
+        return $this->hasMany(PsipAchievementReport::class, 'psip_names_id', 'id');
+    }
+    public function achievementReportWithTrashed()
+    {
+        return $this->hasMany(PsipAchievementReport::class, 'psip_names_id', 'id')->withTrashed();
+    }
+
 
 }

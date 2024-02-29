@@ -12,11 +12,13 @@ use App\Models\Activity;
 use App\Models\DocTypeDivision;
 use App\Models\ReplacedPsipDoc;
 use App\Models\PsipScreeningBrief;
+use App\Models\PsipAchievementReport;
 use App\Models\PsipPsNote;
 use DB;
 use Illuminate\Support\Facades\Log;
 use App\Events\DocumentUploadedEvent;
-
+use Carbon\Carbon;
+use App\Models\DocGroup;
 
 
 class PsipDocumentController extends Controller
@@ -44,6 +46,38 @@ class PsipDocumentController extends Controller
             'folder_types' => Activity::all(),
             'doc_types' => DocType::orderBy('doc_type_name','ASC')->get()
         ]);
+    }
+
+    public function getGroupDocuments(Activity $activity)
+    {
+        //return ($activity->psipDocs);
+
+        return view('options.group_documents',[
+            'activity' => $activity, 
+            'documents' => $activity->psipDocs, 
+            'doc_groups' => DocGroup::orderBy('group_name','ASC')->get()
+        ]);
+        //return view('options.group_documents');
+    }
+
+    public function updateGroupDocuments(Request $request)
+    {
+        //$documentId = $request->input('documentId');
+        $groupId = $request->input('groupId');
+
+        $document = PsipDoc::find($request->input('documentId'));
+        if ($document) {
+            $document->update(['doc_group_id' => $groupId]);
+             return response()->json(['success' => true, 'message' => 'Item moved successfully.']);
+        } else {
+             return response()->json(['error' => true, 'message' => 'Your attempt has failed successfully.']);
+        }
+        
+        // Logic to update the item's group based on itemId and groupId
+        // For example, updating the database record for the item
+
+       
+ 
     }
 
     /**
@@ -265,6 +299,49 @@ class PsipDocumentController extends Controller
                         $psnote->filepath = "documents/psnote/".$doc;
                         $psnote->file_type = $file->extension();
                         $psnote->save();
+                        event(new DocumentUploadedEvent(\Auth::user(), $document));//this is the mail notification
+                    }
+                }
+            DB::commit();
+            return redirect()->route('psip.show',['psip' => $psip->id])//replace this and remove comment when finished
+            ->withSuccess(__('PSIP document saved successfully.'));
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::error(dd($e));
+            return dd($e);//replace this and remove comment when finished
+        }
+    }
+
+    public function addAchievementReport(Request $request,PsipName $psip)
+    {
+        $document = DocType::find(35);//screening brief
+        DB::beginTransaction();//BEGIN THE PROCESS
+        try {
+            $achievementReport = new PsipAchievementReport;
+            $achievementReport->psip_names_id = $psip->id;
+            $achievementReport->file_name = $request->title;
+            $achievementReport->details = $request->description;
+            $achievementReport->achievement_date = Carbon::parse($request->report_date)->format('Y-m-d');
+            $achievementReport->created_by = \Auth::user()->id;
+            //$screeningbrief->previous_note_id = ;
+            
+            $docname=trim($document->doc_type_name);
+            /*upload and record file*/
+            if (isset($request->file_upload)) {
+                        sleep(2);
+                    $file = $request->file_upload;
+                    
+                    if (!empty($file)) {
+                        $psipid_code = str_replace(' ', '_', $psip->id).'_'.str_replace(' ', '_', $psip->code);
+                        $doc_name_sanitized = preg_replace('/[\/\s\\\\,.:;\'"!?]+/', '_', $docname);
+                        $doc = $psipid_code.'_'.$doc_name_sanitized.'_'.md5($file->getClientOriginalName()).'.'.$file->extension();
+                       
+                        $file->storeAs('public/documents/achievement_report', $doc);
+
+
+                        $achievementReport->filepath = "documents/achievement_report/".$doc;
+                        $achievementReport->file_type = $file->extension();
+                        $achievementReport->save();
                         event(new DocumentUploadedEvent(\Auth::user(), $document));//this is the mail notification
                     }
                 }

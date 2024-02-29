@@ -45,10 +45,10 @@
                                 <button class="btn btn-light btn-sm" type="button" id="dropdownMenuButton8" data-bs-toggle="dropdown" aria-expanded="false">
                                  <i class="bi bi-three-dots" style="font-size: 1.3rem;color: cornflowerblue;"></i>
                              </button>
-                             <ul class="dropdown-menu">
-
-                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#screeningBriefModal">Add Screening Brief</a>
+                             <ul class="dropdown-menu">                                
                                 <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#psNoteModal">Add PS Note</a>  
+                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#screeningBriefModal">Add Screening Brief</a>
+                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#achievementReportModal">Add Achievment Report</a>
                                 <a href="#" data-bs-toggle="modal" data-bs-target="#"  class="dropdown-item">Add New Activity</a>
                                 <a href="{{ route('activities.edit', $psip->id) }}" class="dropdown-item">Edit Activity Details</a>                                         
                             </ul>
@@ -84,6 +84,15 @@
                                                 </div>
                                         </li>
                                         @endforeach
+                                        @foreach($psip->achievementReports as $key=>$a_report)
+                                        <li class="list-group-item list-group-item-action d-flex justify-content-between align-items-start"  >
+                                                <div class="ms-2 me-auto" style="width: 100%;">
+                                                    <a href="{{$a_report->filepath? asset('storage/'.$a_report->filepath):'#'}}"  target="_blank" style="display: block; text-decoration: none; color: black; width: 90%;">                                                
+                                                        PS Note{{$a_report->file_name? ' - '.$a_report->file_name:''}}{{$a_report->created_at? ' - Upload Date:'.$a_report->created_at:''}}
+                                                    </a>
+                                                </div>
+                                        </li>
+                                        @endforeach
                                     </div>
                                 </div>
                             </div>
@@ -109,7 +118,7 @@
                                         <a href="{{ route('psipupload.create', $b->id) }}" class="btn btn-primary btn-sm me-2"><i class="bi bi-upload"></i> Upload Document</a>
                                         <div class="d-flex justify-content-between align-items-start">
                                             <select id="docGroupDropdown" class="form-select form-select-sm me-2 docGroupDropdown">
-                                                <option value="">Filter Documents by Department</option>
+                                                <option value="">Folder Select</option>
                                                 @foreach($docGroups as $docGroup)
                                                 <option value="{{$docGroup->id}}">{{$docGroup->group_name}}</option>
                                                 @endforeach
@@ -122,7 +131,7 @@
                                             </button>
                                             <ul class="dropdown-menu">
                                                 <a href="#" data-bs-toggle="modal" data-bs-target="#documentModal" class="dropdown-item"> Document Checklist</a>
-
+                                                <a href="{{ route('psipupload.organize', $b->id) }}" class="dropdown-item" target="_blank">Organize Documents</a>
                                                 <!-- <a href="#" data-bs-toggle="modal" data-bs-target="#" class="dropdown-item">Add Photos To This Activity</a> -->
                                                 <a href="{{ route('activityphoto.upload', $b->id) }}" class="dropdown-item" target="_blank">View/Upload Photos For This Activity</a>
                                                 <a href="#" data-bs-toggle="modal" data-bs-target="#" class="dropdown-item">View Completion Status Of This Activity</a>

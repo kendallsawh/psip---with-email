@@ -44,7 +44,8 @@ class ActivityPhotoController extends Controller
 
 
         $input['file_path'] = time().'.'.$request->image->getClientOriginalExtension();//add activity id to file name
-        $request->image->move(public_path('images'), $input['file_path']);
+        //$request->image->move(public_path('images'), $input['file_path']);
+        $request->image->storeAs('images', $input['file_path'], 'public');
 
 
         $input['title'] = $request->title;

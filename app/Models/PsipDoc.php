@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class PsipDoc extends Model
 {
     use HasFactory, SoftDeletes;
-    protected $fillable = ['filepath','file_type','doc_types_id','activities_id','description','created_by', 'previous_doc_id'];
+    protected $fillable = ['filepath','file_type','doc_types_id','activities_id','description','created_by', 'previous_doc_id', 'doc_group_id', 'doc_title'];
     public function activity()
     {
         return $this->belongsTo('App\Models\Activity', 'activities_id', 'id');
@@ -24,6 +24,11 @@ class PsipDoc extends Model
     public function createdBy()
     {
         return $this->belongsTo('App\Models\User', 'created_by', 'id');
+    }
+
+    public function docGroup()
+    {
+        return $this->belongsTo('App\Models\DocType', 'doc_group_id', 'id');
     }
 
     /*public function getDocumentAttribute(){

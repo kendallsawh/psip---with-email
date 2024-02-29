@@ -26,6 +26,8 @@ Route::group(['namespace' => 'App\Http\Controllers'], function()
     Route::get('/', 'HomeController@index')->name('home.index');
     Route::get('/dl', 'HomeController@download');
     Route::get('/del', 'HomeController@cleaner');
+    Route::get('/organize/{activity}', 'PsipDocumentController@getGroupDocuments')->name('psipupload.organize');
+    Route::post('/organize-save', 'PsipDocumentController@updateGroupDocuments')->name('psipupload.organizesave');
 
 
     
@@ -96,6 +98,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function()
             Route::get('/get-psips/{division}', 'PsipDocumentController@getPsips')->name('get.psips');
             Route::get('/get-activities/{psip}', 'PsipDocumentController@getActivities')->name('get.activities');
             Route::post('/screening-brief/{psip}', 'PsipDocumentController@addScreeningBrief')->name('psipupload.addscreeningbrief');
+            Route::post('/achievement-report/{psip}', 'PsipDocumentController@addAchievementReport')->name('psipupload.achievementreport');//new route to add to permissions
             Route::post('/ps-note/{psip}', 'PsipDocumentController@addPSNote')->name('psipupload.addpsnote');//new route to add to permissions
 
             //Route::get('/show', 'PsipDocumentController@show')->name('psipupload.show');

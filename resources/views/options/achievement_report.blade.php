@@ -1,14 +1,14 @@
 <!-- Modal -->
-<div class="modal fade" id="psNoteModal" tabindex="-1" aria-labelledby="psNoteModalLabel" aria-hidden="true">
+<div class="modal fade" id="achievementReportModal" tabindex="-1" aria-labelledby="achievementReportModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="screeningBriefModalLabel">Add PS Note</h5>
+				<h5 class="modal-title" id="achievementReportModalLabel">Add Achievement Report Document</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
 				<!-- Your Form Here -->
-				<form class="" method="POST" action="{{ route('psipupload.addpsnote', $psip->id) }}" enctype="multipart/form-data">
+				<form class="" method="POST" action="{{ route('psipupload.achievementreport', $psip->id) }}" enctype="multipart/form-data">
 					@csrf
 					<div class="mb-3">
 						<label for="title" class="form-label">Document Title</label>
@@ -40,9 +40,9 @@
                     	<span class="text-danger text-left">{{ $errors->first('description') }}</span>
                     	@endif
                     </div>
-                    <div class="mb-3"><label for="psnote_date" class="form-label">Document Date</label>
+                    <div class="mb-3"><label for="report_date" class="form-label">Document Date</label>
                     <input class="form-control" 
-                        name="psnote_date" 
+                        name="report_date" 
                         type="date" 
                         placeholder="Document Date">
                     </div>	

@@ -116,6 +116,7 @@
     @include('options.update_doc')
     @include('options.screening_brief')
     @include('options.add_ps_note')
+    @include('options.achievement_report')
     @endif
 @endauth
 @guest

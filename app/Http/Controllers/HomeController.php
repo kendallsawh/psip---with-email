@@ -19,5 +19,12 @@ class HomeController extends Controller
         return view('home.index',$data);
     }
 
+    public function test() 
+    {
+        
+
+        return view('options.group_documents');
+    }
+
     
 }

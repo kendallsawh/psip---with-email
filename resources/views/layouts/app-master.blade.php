@@ -18,7 +18,8 @@
 
     <style>
       body{
-        background-image: url('/img/vector.jpg'); background-size: cover;
+        /*background-image: url('/img/vector.jpg'); background-size: cover;*/
+        background-image: url("{{ asset('img/vector.jpg') }}");
       }
       .bd-placeholder-img {
         font-size: 1.125rem;
